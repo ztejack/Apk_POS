@@ -8,21 +8,18 @@
 
     Private Sub ToolStripMenuItem3_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem3.Click
         Hiden()
-        Form4.TopLevel = False
-        Panel1.Controls.Add(Form4)
-        Form4.Show()
+        FormTransaksi.TopLevel = False
+        Panel1.Controls.Add(FormTransaksi)
+        FormTransaksi.Show()
     End Sub
     Sub Hiden()
-        Form2.Hide()
+        FormTransaksi.Hide()
         Form3.Hide()
         Form4.Hide()
     End Sub
 
     Private Sub LogOutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LogOutToolStripMenuItem.Click
-        Hiden()
-        Form2.TopLevel = False
-        Panel1.Controls.Add(Form2)
-        Form2.Show()
+
     End Sub
 
     Private Sub DataBarangToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DataBarangToolStripMenuItem.Click
@@ -30,5 +27,13 @@
         Form3.TopLevel = False
         Panel1.Controls.Add(Form3)
         Form3.Show()
+    End Sub
+
+    Private Sub FormUtama_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub TransaksiToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TransaksiToolStripMenuItem.Click
+
     End Sub
 End Class

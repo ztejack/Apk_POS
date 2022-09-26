@@ -24,11 +24,12 @@ Partial Class FormUtama
     Private Sub InitializeComponent()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LogOutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DataBarangToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New Guna.UI2.WinForms.Guna2Panel()
-        Me.LogOutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DataBarangToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TransaksiToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -48,6 +49,12 @@ Partial Class FormUtama
         Me.ToolStripMenuItem1.Size = New System.Drawing.Size(39, 20)
         Me.ToolStripMenuItem1.Text = "Log"
         '
+        'LogOutToolStripMenuItem
+        '
+        Me.LogOutToolStripMenuItem.Name = "LogOutToolStripMenuItem"
+        Me.LogOutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.LogOutToolStripMenuItem.Text = "LogOut"
+        '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DataBarangToolStripMenuItem})
@@ -55,11 +62,18 @@ Partial Class FormUtama
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(55, 20)
         Me.ToolStripMenuItem2.Text = "Master"
         '
+        'DataBarangToolStripMenuItem
+        '
+        Me.DataBarangToolStripMenuItem.Name = "DataBarangToolStripMenuItem"
+        Me.DataBarangToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
+        Me.DataBarangToolStripMenuItem.Text = "Data Barang"
+        '
         'ToolStripMenuItem3
         '
+        Me.ToolStripMenuItem3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TransaksiToolStripMenuItem})
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(25, 20)
-        Me.ToolStripMenuItem3.Text = "3"
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(66, 20)
+        Me.ToolStripMenuItem3.Text = "Transaksi"
         '
         'Panel1
         '
@@ -69,17 +83,11 @@ Partial Class FormUtama
         Me.Panel1.Size = New System.Drawing.Size(800, 426)
         Me.Panel1.TabIndex = 1
         '
-        'LogOutToolStripMenuItem
+        'TransaksiToolStripMenuItem
         '
-        Me.LogOutToolStripMenuItem.Name = "LogOutToolStripMenuItem"
-        Me.LogOutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.LogOutToolStripMenuItem.Text = "LogOut"
-        '
-        'DataBarangToolStripMenuItem
-        '
-        Me.DataBarangToolStripMenuItem.Name = "DataBarangToolStripMenuItem"
-        Me.DataBarangToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.DataBarangToolStripMenuItem.Text = "Data Barang"
+        Me.TransaksiToolStripMenuItem.Name = "TransaksiToolStripMenuItem"
+        Me.TransaksiToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.TransaksiToolStripMenuItem.Text = "Transaksi"
         '
         'FormUtama
         '
@@ -106,4 +114,5 @@ Partial Class FormUtama
     Friend WithEvents Panel1 As Guna.UI2.WinForms.Guna2Panel
     Friend WithEvents LogOutToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DataBarangToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents TransaksiToolStripMenuItem As ToolStripMenuItem
 End Class

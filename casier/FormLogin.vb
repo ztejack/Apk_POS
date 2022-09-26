@@ -27,6 +27,8 @@ Public Class FormLogin
             Me.InPassword.Text.Trim = "" Then
             MsgBox("Username & Password Harus Diisi!", MsgBoxStyle.Exclamation, "Insufficient Data")
             Return True
+        Else
+            Return False
         End If
     End Function
 
@@ -58,29 +60,33 @@ Public Class FormLogin
 
 
             ElseIf rdDB.HasRows = True Then
-                If rdDB("level").ToString = "0" Then
+                If rdDB("level_id").ToString = "0" Then
                     Me.Hide()
-                    FormStatus.Show()
-                    FormStatus.TXT1.Text = rdDB!name.ToString.Trim
+                    FormUtama.Show()
+
+                    'FormStatus.Show()
+                    'FormStatus.TXT1.Text = rdDB!name.ToString.Trim
                     'Dim password = BCrypt.Net.BCrypt.HashPassword("value")
                     'FormStatus.TXT2.Text = getMD5Hash(InPassword.Text)
                     'FormStatus.txt_nmbrg.Text = getMD5Hash(InPassword.Text)
-                ElseIf rdDB("level").ToString = "1" Then
+                ElseIf rdDB("level_id").ToString = "1" Then
                     Me.Hide()
-                    FormStatus.Show()
-                    FormStatus.TXT1.Text = rdDB!name.ToString.Trim
+                    FormUtama.Show()
+
+                    'FormStatus.Show()
+                    'FormStatus.TXT1.Text = rdDB!name.ToString.Trim
                     'Dim password = BCrypt.Net.BCrypt.HashPassword("value")
                     'FormStatus.TXT2.Text = getMD5Hash(InPassword.Text)
                     'FormStatus.txt_nmbrg.Text = getMD5Hash(InPassword.Text)
                 Else
-                    MsgBox("Email '" & getMD5Hash(InEmail.Text) & "' tidak memiliki akses", MsgBoxStyle.Exclamation, "Information")
+                    MsgBox("Email '" & InEmail.Text & "' tidak memiliki akses", MsgBoxStyle.Exclamation, "Information")
                     InEmail.Text = ""
                     InPassword.Text = ""
                     InEmail.Select()
                 End If
 
             Else
-                MsgBox("Email '" & getMD5Hash(InEmail.Text) & "' tidak terdaftar", MsgBoxStyle.Exclamation, "Information")
+                MsgBox("Email '" & InEmail.Text & "' tidak terdaftar", MsgBoxStyle.Exclamation, "Information")
                 InEmail.Text = ""
                 InPassword.Text = ""
                 'InEmail.Select()
@@ -97,5 +103,7 @@ Public Class FormLogin
         End If
     End Sub
 
+    Private Sub InEmail_TextChanged(sender As Object, e As EventArgs) Handles InEmail.TextChanged
 
+    End Sub
 End Class

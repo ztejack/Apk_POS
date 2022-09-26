@@ -17,7 +17,7 @@ Module Connection
         'This is the connection for your MS SQL Server
         'Dim strServer As String = "alfian-pc"    'This is the server IP/Server name.  If server is intalled on your local machine, your IP should be 127.0.0.1 or you may use localhost
         Dim strServer As String = "localhost"
-        Dim strDbase As String = "pkl_koperasi"   'Database name
+        Dim strDbase As String = "pkl_pos"   'Database name
         Dim strUser As String = "root"                'Database user
         Dim strPass As String = ""     'Database password
 
