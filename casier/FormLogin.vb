@@ -62,7 +62,7 @@ Public Class FormLogin
             ElseIf rdDB.HasRows = True Then
                 If rdDB("level_id").ToString = "0" Then
                     Me.Hide()
-                    FormUtama.Show()
+                    MenuUtama.Show()
 
                     'FormStatus.Show()
                     'FormStatus.TXT1.Text = rdDB!name.ToString.Trim
@@ -71,7 +71,7 @@ Public Class FormLogin
                     'FormStatus.txt_nmbrg.Text = getMD5Hash(InPassword.Text)
                 ElseIf rdDB("level_id").ToString = "1" Then
                     Me.Hide()
-                    FormUtama.Show()
+                    MenuUtama.Show()
 
                     'FormStatus.Show()
                     'FormStatus.TXT1.Text = rdDB!name.ToString.Trim

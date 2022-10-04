@@ -1,4 +1,4 @@
-﻿Public Class FormStatus
+﻿Public Class DataPelanggan
     Private Sub FormStatus_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Top = 0
         Me.Left = 0

@@ -12,6 +12,7 @@ Module Connection
     Public rdDB As MySql.Data.MySqlClient.MySqlDataReader
     Public myError As MySql.Data.MySqlClient.MySqlError
     Public SQL As String
+    Public SQL1 As String
 
     Public Sub conecDB()
         'This is the connection for your MS SQL Server

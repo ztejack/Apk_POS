@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class FormUtama
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class MenuUtama
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,16 +20,16 @@ Partial Class FormUtama
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LogOutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.DataBarangToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DataUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New Guna.UI2.WinForms.Guna2Panel()
-        Me.TransaksiToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -52,12 +52,12 @@ Partial Class FormUtama
         'LogOutToolStripMenuItem
         '
         Me.LogOutToolStripMenuItem.Name = "LogOutToolStripMenuItem"
-        Me.LogOutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.LogOutToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
         Me.LogOutToolStripMenuItem.Text = "LogOut"
         '
         'ToolStripMenuItem2
         '
-        Me.ToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DataBarangToolStripMenuItem})
+        Me.ToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DataBarangToolStripMenuItem, Me.DataUserToolStripMenuItem})
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(55, 20)
         Me.ToolStripMenuItem2.Text = "Master"
@@ -65,12 +65,17 @@ Partial Class FormUtama
         'DataBarangToolStripMenuItem
         '
         Me.DataBarangToolStripMenuItem.Name = "DataBarangToolStripMenuItem"
-        Me.DataBarangToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
+        Me.DataBarangToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.DataBarangToolStripMenuItem.Text = "Data Barang"
+        '
+        'DataUserToolStripMenuItem
+        '
+        Me.DataUserToolStripMenuItem.Name = "DataUserToolStripMenuItem"
+        Me.DataUserToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.DataUserToolStripMenuItem.Text = "Data Pelanggan"
         '
         'ToolStripMenuItem3
         '
-        Me.ToolStripMenuItem3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TransaksiToolStripMenuItem})
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
         Me.ToolStripMenuItem3.Size = New System.Drawing.Size(66, 20)
         Me.ToolStripMenuItem3.Text = "Transaksi"
@@ -83,13 +88,7 @@ Partial Class FormUtama
         Me.Panel1.Size = New System.Drawing.Size(800, 426)
         Me.Panel1.TabIndex = 1
         '
-        'TransaksiToolStripMenuItem
-        '
-        Me.TransaksiToolStripMenuItem.Name = "TransaksiToolStripMenuItem"
-        Me.TransaksiToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.TransaksiToolStripMenuItem.Text = "Transaksi"
-        '
-        'FormUtama
+        'MenuUtama
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -97,7 +96,7 @@ Partial Class FormUtama
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
-        Me.Name = "FormUtama"
+        Me.Name = "MenuUtama"
         Me.Text = "Utama"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.MenuStrip1.ResumeLayout(False)
@@ -114,5 +113,5 @@ Partial Class FormUtama
     Friend WithEvents Panel1 As Guna.UI2.WinForms.Guna2Panel
     Friend WithEvents LogOutToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DataBarangToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents TransaksiToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DataUserToolStripMenuItem As ToolStripMenuItem
 End Class
