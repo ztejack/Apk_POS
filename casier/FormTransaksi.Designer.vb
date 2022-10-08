@@ -23,10 +23,10 @@ Partial Class FormTransaksi
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormTransaksi))
         Me.dvgtampil = New Guna.UI2.WinForms.Guna2DataGridView()
         Me.Kode = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -70,7 +70,10 @@ Partial Class FormTransaksi
         Me.Guna2ContextMenuStrip1 = New Guna.UI2.WinForms.Guna2ContextMenuStrip()
         Me.Guna2AnimateWindow1 = New Guna.UI2.WinForms.Guna2AnimateWindow(Me.components)
         Me.btncancle = New Guna.UI2.WinForms.Guna2Button()
-        Me.PrintDocument1 = New System.Drawing.Printing.PrintDocument()
+        Me.prnDocument = New System.Drawing.Printing.PrintDocument()
+        Me.prnPreview = New System.Windows.Forms.PrintPreviewDialog()
+        Me.prnDialog = New System.Windows.Forms.PrintDialog()
+        Me.Guna2Button1 = New Guna.UI2.WinForms.Guna2Button()
         CType(Me.dvgtampil, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.txtjumlahB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -80,8 +83,8 @@ Partial Class FormTransaksi
         '
         'dvgtampil
         '
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
-        Me.dvgtampil.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.White
+        Me.dvgtampil.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dvgtampil.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -89,24 +92,24 @@ Partial Class FormTransaksi
         Me.dvgtampil.BackgroundColor = System.Drawing.Color.White
         Me.dvgtampil.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dvgtampil.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 10.5!)
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dvgtampil.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Segoe UI", 10.5!)
+        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dvgtampil.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.dvgtampil.ColumnHeadersHeight = 4
         Me.dvgtampil.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Kode, Me.Nama_Barang, Me.harga, Me.jumlah, Me.ttl})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Segoe UI", 10.5!)
-        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dvgtampil.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Segoe UI", 10.5!)
+        DataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dvgtampil.DefaultCellStyle = DataGridViewCellStyle8
         Me.dvgtampil.EnableHeadersVisualStyles = False
         Me.dvgtampil.GridColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.dvgtampil.Location = New System.Drawing.Point(13, 275)
@@ -150,9 +153,9 @@ Partial Class FormTransaksi
         '
         'harga
         '
-        DataGridViewCellStyle3.Format = "Rp #,###"
-        DataGridViewCellStyle3.NullValue = "0"
-        Me.harga.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle7.Format = "Rp #,###"
+        DataGridViewCellStyle7.NullValue = "0"
+        Me.harga.DefaultCellStyle = DataGridViewCellStyle7
         Me.harga.HeaderText = "Harga"
         Me.harga.Name = "harga"
         '
@@ -733,8 +736,33 @@ Partial Class FormTransaksi
         Me.btncancle.TabIndex = 34
         Me.btncancle.Text = "Batal"
         '
-        'PrintDocument1
+        'prnPreview
         '
+        Me.prnPreview.AutoScrollMargin = New System.Drawing.Size(0, 0)
+        Me.prnPreview.AutoScrollMinSize = New System.Drawing.Size(0, 0)
+        Me.prnPreview.ClientSize = New System.Drawing.Size(400, 300)
+        Me.prnPreview.Enabled = True
+        Me.prnPreview.Icon = CType(resources.GetObject("prnPreview.Icon"), System.Drawing.Icon)
+        Me.prnPreview.Name = "prnPreview"
+        Me.prnPreview.Visible = False
+        '
+        'prnDialog
+        '
+        Me.prnDialog.UseEXDialog = True
+        '
+        'Guna2Button1
+        '
+        Me.Guna2Button1.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.Guna2Button1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.Guna2Button1.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.Guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.Guna2Button1.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.Guna2Button1.ForeColor = System.Drawing.Color.White
+        Me.Guna2Button1.Location = New System.Drawing.Point(814, 506)
+        Me.Guna2Button1.Name = "Guna2Button1"
+        Me.Guna2Button1.Size = New System.Drawing.Size(180, 45)
+        Me.Guna2Button1.TabIndex = 35
+        Me.Guna2Button1.Text = "Guna2Button1"
         '
         'FormTransaksi
         '
@@ -745,6 +773,7 @@ Partial Class FormTransaksi
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.CancelButton = Me.btncancle
         Me.ClientSize = New System.Drawing.Size(1323, 663)
+        Me.Controls.Add(Me.Guna2Button1)
         Me.Controls.Add(Me.btncancle)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.txttotalbyr)
@@ -817,5 +846,8 @@ Partial Class FormTransaksi
     Friend WithEvents Guna2ContextMenuStrip1 As Guna.UI2.WinForms.Guna2ContextMenuStrip
     Friend WithEvents Guna2AnimateWindow1 As Guna.UI2.WinForms.Guna2AnimateWindow
     Friend WithEvents btncancle As Guna.UI2.WinForms.Guna2Button
-    Friend WithEvents PrintDocument1 As Printing.PrintDocument
+    Friend WithEvents prnDocument As Printing.PrintDocument
+    Friend WithEvents prnPreview As PrintPreviewDialog
+    Friend WithEvents prnDialog As PrintDialog
+    Friend WithEvents Guna2Button1 As Guna.UI2.WinForms.Guna2Button
 End Class

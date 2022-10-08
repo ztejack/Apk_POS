@@ -2,7 +2,6 @@
 Imports System.Drawing.Printing
 Public Class FormTransaksi
     'produks & transaksi'
-    Dim kodeT As Integer
     Dim kodeB, namaB As String
     Dim hargaB, total, totalB, dibayar, kembalian, Qty, stokB, bayar As Long
     Dim tgl As Date
@@ -12,9 +11,65 @@ Public Class FormTransaksi
     Dim WithEvents PD As New PrintDocument
     Dim PPD As New PrintPreviewDialog
 
+    ' for Report:
+    Private CurrentY As Integer
+    Private CurrentX As Integer
+    Private leftMargin As Integer
+    Private rightMargin As Integer
+    Private topMargin As Integer
+    Private bottomMargin As Integer
+    Private InvoiceWidth As Integer
+    Private InvoiceHeight As Integer
+    Private ReadInvoice As Boolean
+    Private AmountPosition As Integer
+
+
+    ' for Invoice Head:
+    Private InvTitle As String
+    Private InvSubTitle1 As String
+    Private InvSubTitle2 As String
+    Private InvSubTitle3 As String
+    Private InvImage As String
+
+    ' Font and Color:------------------
+    ' Title Font
+    Private InvTitleFont As Font = New Font("Segoi UI", 24, FontStyle.Regular)
+    ' Title Font height
+    Private InvTitleHeight As Integer
+    ' SubTitle Font
+    Private InvSubTitleFont As Font = New Font("Segoi UI", 14, FontStyle.Regular)
+    ' Invoice Font Bold
+    Private InvoiceFontB14 As Font = New Font("Segoi UI", 14, FontStyle.Bold)
+    ' SubTitle Font height
+    Private InvSubTitleHeight As Integer
+    ' Invoice Font
+    Private InvoiceFont As Font = New Font("Segoi UI", 12, FontStyle.Regular)
+    ' Invoice Font Bold
+    Private InvoiceFontB As Font = New Font("Segoi UI", 12, FontStyle.Bold)
+    ' Invoice Font height
+    Private InvoiceFontHeight As Integer
+    ' Blue Color
+    Private BlueBrush As SolidBrush = New SolidBrush(Color.Blue)
+    ' Red Color
+    Private RedBrush As SolidBrush = New SolidBrush(Color.Red)
+    ' Black Color
+    Private BlackBrush As SolidBrush = New SolidBrush(Color.Black)
+
+    Public Sub New()
+        MyBase.New()
+
+        InitializeComponent()
+
+        Me.prnDialog = New System.Windows.Forms.PrintDialog
+        Me.prnPreview = New System.Windows.Forms.PrintPreviewDialog
+        Me.prnDocument = New System.Drawing.Printing.PrintDocument
+        ' The Event of 'PrintPage'
+        AddHandler prnDocument.PrintPage, AddressOf prnDocument_PrintPage
+    End Sub
 
     'users'
-    Dim idpel, nama, username As String
+    Dim idpel, nama, username, perusahaanID, perusahaanName As String
+
 
     Private Sub FormTransaksi_Load(sender As Object, e As EventArgs) Handles Me.Load
         desaindgv()
@@ -195,9 +250,11 @@ Public Class FormTransaksi
                 idpel = rdDB.Item("id")
                 nama = rdDB.Item("name")
                 username = rdDB.Item("username")
+                perusahaanID = rdDB.Item("perusahaan_id")
                 txtnamapelanggan.Text = nama
-                rdDB.Close()
 
+                rdDB.Close()
+                getperusahaan()
             Else
                 MessageBox.Show("Data pelanggan dengan ID '" & txtidpelanggan.Text & "' tidak ditemukan", "Oops", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 txtidpelanggan.Text = ""
@@ -206,7 +263,6 @@ Public Class FormTransaksi
                 txtidpelanggan.Focus()
                 rdDB.Close()
 
-
             End If
         Else
             txtnamapelanggan.Text = ""
@@ -214,8 +270,23 @@ Public Class FormTransaksi
 
     End Sub
 
+    Sub getperusahaan()
+        Call conecDB()
+        Call initCMD()
+
+        SQL = "SELECT * FROM perusahaans WHERE id = '" & perusahaanID & "'"
+        With comDB
+            .CommandText = SQL
+            .ExecuteNonQuery()
+        End With
+        rdDB = comDB.ExecuteReader
+        rdDB.Read()
+        perusahaanName = rdDB.Item("nama_perusahaan")
+        rdDB.Close()
+    End Sub
+
     Sub simpandata()
-        tgl = Format(Now, "yyyy/MM/dd HH:mm:ss")
+        tgl = Format(txttgltransaksi.Value, "yyyy/MM/dd HH:mm:ss")
         idpel = txtidpelanggan.Text
         Dim idTRANS As String = ""
         Dim idsementara As String = ""
@@ -271,9 +342,6 @@ Public Class FormTransaksi
             'End Try
 
         End If
-        'MessageBox.Show("idpelanggan : '" & idpel & "'" & vbCrLf & "' metode byr : '" & metodbyr & "'" & vbCrLf & "' id tagihan : '" & idtagihan & "'", "Oops", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-
-        'Try
         Call conecDB()
         Call initCMD()
 
@@ -310,9 +378,6 @@ Public Class FormTransaksi
         End With
         rdDB.Close()
 
-        'Catch ex As Exception
-        'MessageBox.Show("transaksi Gagal", "Oops", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-        'End Try
     End Sub
     Sub movedata()
 
@@ -414,9 +479,13 @@ Public Class FormTransaksi
         Next
 
         txttotalbyr.Text = "Rp. " + Format(hitung, "##,###")
-        'Dim dibayar As Long = txtbayar.Text
 
     End Sub
+
+    Private Sub Guna2Button1_Click(sender As Object, e As EventArgs) Handles Guna2Button1.Click
+        DisplayInvoice()
+    End Sub
+
     Private Sub txtjumlahB_ValueChanged(sender As Object, e As EventArgs) Handles txtjumlahB.ValueChanged
 
         If txtkodeB.Text IsNot "" Then
@@ -464,6 +533,7 @@ Public Class FormTransaksi
         rdDB.Close()
     End Sub
 
+
     Private Sub BtnTambah_Click(sender As Object, e As EventArgs) Handles BtnTambah.Click
         If IdTransaksi.Text IsNot "" Then
             movedata()
@@ -482,8 +552,8 @@ Public Class FormTransaksi
             txttotalB.Text = ""
         End If
 
-
     End Sub
+
 
     Private Sub txtbayar_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtbayar.KeyPress
         Dim keyascii As Short = Asc(e.KeyChar)
@@ -494,152 +564,245 @@ Public Class FormTransaksi
         End If
     End Sub
 
-    Private Sub txtnamapelanggan_TextChanged(sender As Object, e As EventArgs) Handles txtnamapelanggan.TextChanged
-
-    End Sub
-
-    Private Sub txthargaB_TextChanged(sender As Object, e As EventArgs) Handles txthargaB.TextChanged
-
-    End Sub
-
-    Private Sub txtkembalian_TextChanged(sender As Object, e As EventArgs) Handles txtkembalian.TextChanged
-
-    End Sub
-
-    Private Sub IdTransaksi_TextChanged(sender As Object, e As EventArgs) Handles IdTransaksi.TextChanged
-
-    End Sub
-
-    Private Sub Label6_Click(sender As Object, e As EventArgs) Handles Label6.Click
-
-    End Sub
-
-    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
-
-    End Sub
-
-    Private Sub Label8_Click(sender As Object, e As EventArgs) Handles Label8.Click
-
-    End Sub
-
-    Private Sub Label5_Click(sender As Object, e As EventArgs) Handles Label5.Click
-
-    End Sub
-
-    Private Sub txttotalB_TextChanged(sender As Object, e As EventArgs) Handles txttotalB.TextChanged
-
-    End Sub
-
-    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
-
-    End Sub
-
-    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
-
-    End Sub
-
-    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
-
-    End Sub
-
-    Private Sub txtnamaB_TextChanged(sender As Object, e As EventArgs) Handles txtnamaB.TextChanged
-
-    End Sub
-
-    Private Sub txtkodeB_TextChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub txttgltransaksi_ValueChanged(sender As Object, e As EventArgs) Handles txttgltransaksi.ValueChanged
-
-    End Sub
-
-    Private Sub Label7_Click(sender As Object, e As EventArgs) Handles Label7.Click
-
-    End Sub
-
     Private Sub btncancle_Click(sender As Object, e As EventArgs) Handles btncancle.Click
         reset()
-        PPD.Document = PD
-        PPD.ShowDialog()
     End Sub
 
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
+    'Private Sub PD_BeginPrint(sender As Object, e As PrintEventArgs) Handles PD.BeginPrint
+    'Dim pagesetup As New PageSettings
+    '   pagesetup.PaperSize = New PaperSize("Custom", 250, 500)
+    '  PD.DefaultPageSettings = pagesetup
+    'End Sub
+
+
+    Private Sub ReadInvoiceHead()
+        'Titles and Image of invoice:
+        InvTitle = "KOPKARBARA"
+        InvSubTitle1 = "Jl. Soekarno Hatta KM. 15, Tarahan"
+        InvSubTitle2 = "Srengsem, Kec. Panjang, Kota Bandar Lampung, Lampung"
+        InvSubTitle3 = "Phone 2233445566"
+        InvImage = Application.StartupPath & "\Resources\" + "logo bukitasam@3x.png"
+    End Sub
+
+    Private Sub SetInvoiceHead(ByVal g As Graphics)
+        ReadInvoiceHead()
+
+        CurrentY = topMargin
+        CurrentX = leftMargin
+        Dim ImageHeight As Integer = 0
+
+        ' Draw Invoice image:
+        If (System.IO.File.Exists(InvImage)) Then
+            Dim oInvImage As Bitmap = New Bitmap(InvImage)
+            ' Set Image Left to center Image:
+            Dim xImage As Integer = CurrentX + (InvoiceWidth - oInvImage.Width) / 2
+            ImageHeight = oInvImage.Height ' Get Image Height
+            g.DrawImage(oInvImage, xImage, CurrentY)
+        End If
+
+        InvTitleHeight = Convert.ToInt32(InvTitleFont.GetHeight(g))
+        InvSubTitleHeight = Convert.ToInt32(InvSubTitleFont.GetHeight(g))
+        ' Get Titles Length:
+        Dim lenInvTitle As Integer = Convert.ToInt32(g.MeasureString(InvTitle, InvTitleFont).Width)
+        Dim lenInvSubTitle1 As Integer = Convert.ToInt32(g.MeasureString(InvSubTitle1, InvSubTitleFont).Width)
+        Dim lenInvSubTitle2 As Integer = Convert.ToInt32(g.MeasureString(InvSubTitle2, InvSubTitleFont).Width)
+        Dim lenInvSubTitle3 As Integer = Convert.ToInt32(g.MeasureString(InvSubTitle3, InvSubTitleFont).Width)
+        ' Set Titles Left:
+        Dim xInvTitle As Integer = CurrentX + (InvoiceWidth - lenInvTitle) / 2
+        Dim xInvSubTitle1 As Integer = CurrentX + (InvoiceWidth - lenInvSubTitle1) / 2
+        Dim xInvSubTitle2 As Integer = CurrentX + (InvoiceWidth - lenInvSubTitle2) / 2
+        Dim xInvSubTitle3 As Integer = CurrentX + (InvoiceWidth - lenInvSubTitle3) / 2
+
+        ' Draw Invoice Head:
+        If (InvTitle <> "") Then
+            CurrentY = CurrentY + ImageHeight
+            g.DrawString(InvTitle, InvTitleFont, BlueBrush, xInvTitle, CurrentY)
+        End If
+        If (InvSubTitle1 <> "") Then
+            CurrentY = CurrentY + InvTitleHeight
+            g.DrawString(InvSubTitle1, InvSubTitleFont, BlueBrush, xInvSubTitle1, CurrentY)
+        End If
+        If (InvSubTitle2 <> "") Then
+            CurrentY = CurrentY + InvSubTitleHeight
+            g.DrawString(InvSubTitle2, InvSubTitleFont, BlueBrush, xInvSubTitle2, CurrentY)
+        End If
+        If (InvSubTitle3 <> "") Then
+            CurrentY = CurrentY + InvSubTitleHeight
+            g.DrawString(InvSubTitle3, InvSubTitleFont, BlueBrush, xInvSubTitle3, CurrentY)
+        End If
+
+        ' Draw line:
+        CurrentY = CurrentY + InvSubTitleHeight + 8
+        g.DrawLine(New Pen(Brushes.Black, 2), CurrentX, CurrentY, rightMargin, CurrentY)
+    End Sub
+
+    Private Sub SetOrderData(ByVal g As Graphics)
+        ' Set Company Name, City, Salesperson, Order ID and Order Date
+        Dim FieldValue As String = ""
+        InvoiceFontHeight = Convert.ToInt32(InvoiceFont.GetHeight(g))
+
+        ' Set Nama Pelanggan
+        CurrentX = leftMargin
+        CurrentY = CurrentY + 8
+        FieldValue = "Nama Pelanggan: " & txtnamapelanggan.Text
+        g.DrawString(FieldValue, InvoiceFont, BlackBrush, CurrentX, CurrentY)
+        ' Set Perusahaan
+        CurrentX = leftMargin
+        CurrentY = CurrentY + InvoiceFontHeight
+
+        FieldValue = "Perusahaan: " & perusahaanName
+        g.DrawString(FieldValue, InvoiceFont, BlackBrush, CurrentX, CurrentY)
+
+        ' Set Order ID:
+        AmountPosition = CurrentX + Convert.ToInt32(g.MeasureString(FieldValue, InvoiceFont).Width) + 350
+        Dim xOrderid As Integer = AmountPosition - Convert.ToInt32(g.MeasureString("Sub Total", InvoiceFont).Width)
+        CurrentY = CurrentY - InvoiceFontHeight
+        FieldValue = "Order ID: " & IdTransaksi.Text
+        g.DrawString(FieldValue, InvoiceFont, BlackBrush, xOrderid, CurrentY)
+        ' Set Order Date:
+        Dim xDateorder As Integer = AmountPosition - Convert.ToInt32(g.MeasureString("Sub Total", InvoiceFont).Width)
+        CurrentY = CurrentY + InvoiceFontHeight
+
+        FieldValue = "Order Date: " & Format(txttgltransaksi.Value, "yyyy/MM/dd")
+        g.DrawString(FieldValue, InvoiceFont, BlackBrush, xDateorder, CurrentY)
+
+        ' Draw line:
+        CurrentY = CurrentY + InvoiceFontHeight + 8
+        g.DrawLine(New Pen(Brushes.Black), leftMargin, CurrentY, rightMargin, CurrentY)
+    End Sub
+
+    Private Sub SetInvoiceData(ByVal g As Graphics, ByVal e As System.Drawing.Printing.PrintPageEventArgs)
+        ' Set Invoice Table:
+        Dim FieldValue As String = ""
+        Dim CurrentRecord = 0
+        Dim RecordsPerPage = 20
+        Dim Amount As Decimal = 0
+        Dim StopReading As Boolean = False
+
+        InvoiceFontHeight = Convert.ToInt32(InvoiceFont.GetHeight(g))
+
+        ' Set Table Head:
+        Dim xProductID As Integer = leftMargin
+        CurrentY = CurrentY + InvoiceFontHeight
+
+        Dim xProductName As Integer = leftMargin
+        g.DrawString("Nama Barang", InvoiceFont, BlueBrush, xProductName, CurrentY)
+
+        Dim xUnitPrice As Integer = rightMargin - 350
+        g.DrawString("Harga", InvoiceFont, BlueBrush, xUnitPrice, CurrentY)
+
+        Dim xQuantity As Integer = xUnitPrice + Convert.ToInt32(g.MeasureString("Jumlah", InvoiceFont).Width) + 80
+        g.DrawString("Jumlah", InvoiceFont, BlueBrush, xQuantity, CurrentY)
+
+        Dim xTotal As Integer = xQuantity + Convert.ToInt32(g.MeasureString("Total", InvoiceFont).Width) + 50
+        g.DrawString("Total", InvoiceFont, BlueBrush, xTotal, CurrentY)
+
+        AmountPosition = xTotal + Convert.ToInt32(g.MeasureString("Discount", InvoiceFont).Width) - 80
+
+        ' Set Invoice Table:
+        CurrentY = CurrentY + InvoiceFontHeight + 8
+
+        'Pull data grid view data
+        Dim valor As Integer
+        valor = dvgtampil.RowCount
+        valor = valor - 1
+        For indice As Integer = 0 To valor
+            FieldValue = dvgtampil.Rows(indice).Cells(1).Value.ToString
+            ' if Length of (Product Name) > 20, Draw 20 character only
+            If (FieldValue.Length > 20) Then
+                FieldValue = FieldValue.Remove(20, FieldValue.Length - 20)
+            End If
+            g.DrawString(FieldValue, InvoiceFont, BlackBrush, xProductName, CurrentY)
+
+            'FieldValue = String.Format("{0:0.00}", rdDB("UnitPrice"))
+            FieldValue = "Rp. " + Format(dvgtampil.Rows(indice).Cells(2).Value, "##,###")
+            g.DrawString(FieldValue, InvoiceFont, BlackBrush, xUnitPrice, CurrentY)
+
+            'FieldValue = rdDB("Quantity").ToString()
+            FieldValue = dvgtampil.Rows(indice).Cells(3).Value.ToString
+            g.DrawString(FieldValue, InvoiceFont, BlackBrush, xQuantity, CurrentY)
+
+            FieldValue = "Rp. " + Format(dvgtampil.Rows(indice).Cells(4).Value, "##,###")
+            g.DrawString(FieldValue, InvoiceFont, BlackBrush, xTotal, CurrentY)
+
+
+            CurrentY = CurrentY + InvoiceFontHeight
+
+
+
+            CurrentRecord += 1
+
+        Next
+
+        If (CurrentRecord < RecordsPerPage) Then
+            e.HasMorePages = False
+        Else
+            e.HasMorePages = True
+        End If
+        SetInvoiceTotal(g)
+
+
+        g.Dispose()
+    End Sub
+
+    Private Sub SetInvoiceTotal(ByVal g As Graphics)
+        ' Set Invoice Total:
+        ' Draw line:
+        CurrentY = CurrentY + 16
+        g.DrawLine(New Pen(Brushes.Black), leftMargin, CurrentY, rightMargin, CurrentY)
+        ' Get Right Edge of Invoice:
+        Dim xRightEdg As Integer = AmountPosition + Convert.ToInt32(g.MeasureString("Extended Price", InvoiceFont).Width)
+
+        ' Write Sub Total:
+        Dim xSubTotal As Integer = AmountPosition - Convert.ToInt32(g.MeasureString("Sub Total", InvoiceFontB14).Width)
+        CurrentY = CurrentY + 8
+        g.DrawString("Total", InvoiceFontB14, RedBrush, xSubTotal, CurrentY)
+        'Dim TotalValue As String = String.Format("{0:0.00}", SubTotal)
+        Dim TotalValue As String = txttotalbyr.Text
+        Dim xTotalValue As Integer = xRightEdg - Convert.ToInt32(g.MeasureString(TotalValue, InvoiceFontB14).Width)
+        g.DrawString(TotalValue, InvoiceFontB14, BlackBrush, xTotalValue, CurrentY)
+
+
 
     End Sub
 
-    Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
-
+    Private Sub DisplayInvoice()
+        prnPreview.Document = Me.prnDocument
+        Try
+            prnPreview.ShowDialog()
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString())
+        End Try
     End Sub
 
-    Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
+    Private Sub ReadInvoiceData()
+        Call conecDB()
+        Call initCMD()
 
+        SQL = "SELECT * FROM detail_transaksis WHERE id_Transaksi ='" & IdTransaksi.Text & "'"
+        With comDB
+            .CommandText = SQL
+            .ExecuteNonQuery()
+        End With
+        rdDB = comDB.ExecuteReader
+        rdDB.Read()
     End Sub
 
-    Private Sub Label13_Click(sender As Object, e As EventArgs) Handles Label13.Click
+    Private Sub prnDocument_PrintPage(ByVal sender As System.Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs)
+        leftMargin = Convert.ToInt32(e.MarginBounds.Left)
+        rightMargin = Convert.ToInt32(e.MarginBounds.Right)
+        topMargin = Convert.ToInt32(e.MarginBounds.Top)
+        bottomMargin = Convert.ToInt32(e.MarginBounds.Bottom)
+        InvoiceWidth = Convert.ToInt32(e.MarginBounds.Width)
+        InvoiceHeight = Convert.ToInt32(e.MarginBounds.Height)
 
+        ' If (Not ReadInvoice) Then ReadInvoiceData()
+
+        SetInvoiceHead(e.Graphics) ' Draw Invoice Head
+        SetOrderData(e.Graphics) ' Draw Order Data
+        SetInvoiceData(e.Graphics, e) ' Draw Invoice Data
+
+        ReadInvoice = True
     End Sub
-
-    Private Sub Label12_Click(sender As Object, e As EventArgs) Handles Label12.Click
-
-    End Sub
-
-    Private Sub Label10_Click(sender As Object, e As EventArgs) Handles Label10.Click
-
-    End Sub
-
-    Private Sub Label11_Click(sender As Object, e As EventArgs) Handles Label11.Click
-
-    End Sub
-
-    Private Sub txttotalbyr_TextChanged(sender As Object, e As EventArgs) Handles txttotalbyr.TextChanged
-
-    End Sub
-
-    Private Sub GroupBox3_Enter(sender As Object, e As EventArgs) Handles GroupBox3.Enter
-
-    End Sub
-
-    Private Sub Label14_Click(sender As Object, e As EventArgs) Handles Label14.Click
-
-    End Sub
-
-    Private Sub Guna2ContextMenuStrip1_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Guna2ContextMenuStrip1.Opening
-
-    End Sub
-
-    Private Sub PD_BeginPrint(sender As Object, e As PrintEventArgs) Handles PD.BeginPrint
-        Dim pagesetup As New PageSettings
-        pagesetup.PaperSize = New PaperSize("Custom", 250, 500)
-        PD.DefaultPageSettings = pagesetup
-    End Sub
-
-    Private Sub PD_PrintPage(sender As Object, e As PrintPageEventArgs) Handles PD.PrintPage
-        Dim f10 As New Font("Segoi UI", 10, FontStyle.Regular)
-        Dim f10b As New Font("Segoi UI", 10, FontStyle.Bold)
-        Dim f14 As New Font("Segoi UI", 14, FontStyle.Bold)
-        Dim f8 As New Font("Segoi UI", 8, FontStyle.Regular)
-
-        Dim leftmargin As Integer = PD.DefaultPageSettings.Margins.Left
-        Dim centermargin As Integer = PD.DefaultPageSettings.PaperSize.Width / 2
-        Dim rightmargin As Integer = PD.DefaultPageSettings.PaperSize.Width
-
-        Dim kanan As New StringFormat
-        Dim tengah As New StringFormat
-        kanan.Alignment = StringAlignment.Far
-        tengah.Alignment = StringAlignment.Center
-
-        Dim garis As String
-        garis = "-------------------------------------------------------------"
-
-        e.Graphics.DrawString("Nama Toko", f14, Brushes.Black, centermargin, 5, tengah)
-        e.Graphics.DrawString("Jl. Soekarno Hatta KM. 15, Tarahan, Lampung", f10, Brushes.Black, centermargin, 25, tengah)
-        e.Graphics.DrawString("HP: 085669920357", f10, Brushes.Black, centermargin, 40, tengah)
-
-        e.Graphics.DrawString("Nama Pelanggan :", f10, Brushes.Black, 0, 60)
-        e.Graphics.DrawString("Tomi Andreansyah", f10, Brushes.Black, 62, 60)
-
-        e.Graphics.DrawString(garis, f10b, Brushes.Black, centermargin, 40, tengah)
-    End Sub
-
 End Class
