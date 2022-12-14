@@ -755,15 +755,31 @@ Public Class FormTransaksi
         Dim xRightEdg As Integer = AmountPosition + Convert.ToInt32(g.MeasureString("Extended Price", InvoiceFont).Width)
 
         ' Write Sub Total:
-        Dim xSubTotal As Integer = AmountPosition - Convert.ToInt32(g.MeasureString("Sub Total", InvoiceFontB14).Width)
-        CurrentY = CurrentY + 8
-        g.DrawString("Total", InvoiceFontB14, RedBrush, xSubTotal, CurrentY)
+        Dim xTotal As Integer = AmountPosition - Convert.ToInt32(g.MeasureString("Sub Total", InvoiceFontB14).Width) - 10
+        CurrentY = CurrentY + 14
+        g.DrawString("Total Bayar", InvoiceFontB14, RedBrush, xTotal, CurrentY)
         'Dim TotalValue As String = String.Format("{0:0.00}", SubTotal)
         Dim TotalValue As String = txttotalbyr.Text
         Dim xTotalValue As Integer = xRightEdg - Convert.ToInt32(g.MeasureString(TotalValue, InvoiceFontB14).Width)
         g.DrawString(TotalValue, InvoiceFontB14, BlackBrush, xTotalValue, CurrentY)
 
+        CurrentY = CurrentY + InvoiceFontHeight + 10
+        g.DrawString("Metode Pembayaran", InvoiceFontB14, RedBrush, xTotal, CurrentY)
+        Dim MetodeBayar As String = cbxmetodebyr.Text
+        g.DrawString(MetodeBayar, InvoiceFontB14, BlackBrush, xTotalValue, CurrentY)
 
+        If MetodeBayar = "Tunai" Then
+            CurrentY = CurrentY + InvoiceFontHeight + 10
+
+            g.DrawString("Tunai", InvoiceFontB14, RedBrush, xTotal, CurrentY)
+            Dim Tunai As String = "Rp. " + txtbayar.Text
+            g.DrawString(Tunai, InvoiceFontB14, BlackBrush, xTotalValue, CurrentY)
+            CurrentY = CurrentY + InvoiceFontHeight + 10
+
+            g.DrawString("Kembalian", InvoiceFontB14, RedBrush, xTotal, CurrentY)
+            Dim Kembalian As String = txtkembalian.Text
+            g.DrawString(Kembalian, InvoiceFontB14, BlackBrush, xTotalValue, CurrentY)
+        End If
 
     End Sub
 

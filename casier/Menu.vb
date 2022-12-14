@@ -12,6 +12,7 @@
         Panel1.Controls.Add(FormTransaksi)
         FormTransaksi.Show()
     End Sub
+
     Sub Hiden()
         FormTransaksi.Hide()
         DataBarang.Hide()
@@ -45,5 +46,12 @@
         DataPelanggan.TopLevel = False
         Panel1.Controls.Add(DataPelanggan)
         DataPelanggan.Show()
+    End Sub
+
+    Private Sub MenuToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MenuToolStripMenuItem.Click
+        Hiden()
+        FormUtama.TopLevel = False
+        Panel1.Controls.Add(FormUtama)
+        FormUtama.Show()
     End Sub
 End Class

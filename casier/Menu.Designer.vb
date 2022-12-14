@@ -30,12 +30,13 @@ Partial Class MenuUtama
         Me.DataUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New Guna.UI2.WinForms.Guna2Panel()
+        Me.MenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.ToolStripMenuItem3})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuToolStripMenuItem, Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.ToolStripMenuItem3})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(800, 24)
@@ -52,7 +53,7 @@ Partial Class MenuUtama
         'LogOutToolStripMenuItem
         '
         Me.LogOutToolStripMenuItem.Name = "LogOutToolStripMenuItem"
-        Me.LogOutToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
+        Me.LogOutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.LogOutToolStripMenuItem.Text = "LogOut"
         '
         'ToolStripMenuItem2
@@ -88,6 +89,12 @@ Partial Class MenuUtama
         Me.Panel1.Size = New System.Drawing.Size(800, 426)
         Me.Panel1.TabIndex = 1
         '
+        'MenuToolStripMenuItem
+        '
+        Me.MenuToolStripMenuItem.Name = "MenuToolStripMenuItem"
+        Me.MenuToolStripMenuItem.Size = New System.Drawing.Size(50, 20)
+        Me.MenuToolStripMenuItem.Text = "Menu"
+        '
         'MenuUtama
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -114,4 +121,5 @@ Partial Class MenuUtama
     Friend WithEvents LogOutToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DataBarangToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DataUserToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents MenuToolStripMenuItem As ToolStripMenuItem
 End Class

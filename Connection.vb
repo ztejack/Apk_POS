@@ -7,7 +7,9 @@ Module Connection
     Public connDB As New MySql.Data.MySqlClient.MySqlConnection
     Public comDB As New MySql.Data.MySqlClient.MySqlCommand
     Public rdDB As MySql.Data.MySqlClient.MySqlDataReader
+    Public adDB As MySql.Data.MySqlClient.MysqlDataAdapter
     Public myError As MySql.Data.MySqlClient.MySqlError
+
     Public SQL As String
 
     Public Sub conecDB()
